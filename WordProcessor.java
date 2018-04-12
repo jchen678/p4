@@ -65,7 +65,15 @@ public class WordProcessor {
 		 * 		streamOfLines.map(...).filter(a -> ...).map(...) and so on
 		 */
 		
-		return null;
+		// create a Stream of all of the lines in the file at filepath
+		Stream<String> wordStream = Files.lines(Paths.get(filepath))
+				// trim all the whitespace from each String in the Stream
+				.map(String::trim)
+				// remove any null or empty Strings from the Stream
+				.filter(x -> x != null && !x.equals(""))
+				// make all of the Strings in the Stream uppercase
+				.map(String::toUpperCase);
+		return wordStream;
 	}
 	
 	/**
@@ -86,7 +94,56 @@ public class WordProcessor {
 	 * @return true if word1 and word2 are adjacent else false
 	 */
 	public static boolean isAdjacent(String word1, String word2) {
-		return false;	
+		// A few easy checks to make here - if the lengths of the two words differ by more than 1,
+		// they are obviously not adjacent (since adjacency allows at most 1 letter removal or
+		// addition). Per the Javadoc for this method, two words are not adjacent if they are
+		// equal. If either of the words is the empty string, the two will not be adjacent.
+		// (I only included that check to avoid any StringIndexOutOfBounds exceptions.)
+		if(Math.abs(word1.length() - word2.length()) > 1 || word1.equals(word2) ||
+				word1.equals("") || word2.equals("")) {
+			return false;
+		}
+		// If the two words have equal lengths, they are adjacent if there is exactly one
+		// different letter between them. (At this point, the two words will never be equal,
+		// because I already checked for that in the above conditional.) This case is easy to
+		// check - just iterate over both of the strings simultaneously and keep track of any
+		// adjacent characters that are not equal. If they have more than one difference, return
+		// false.
+		else if(word1.length() == word2.length()) {
+			int numDiff = 0;
+			for(int i = 0; i < word1.length(); i++) {
+				if(word1.charAt(i) != word2.charAt(i)) {
+					numDiff++;
+				}
+			}
+			
+			return numDiff == 1;
+		}
+		// If the lengths of the two words differ by 1, they are adjacent if there is exactly one
+		// letter addition or removal between them. To check this, iterate over both of the strings
+		// simultaneously. The first time you find unequal adjacent characters, skip that character
+		// in the longer of the two strings and carry on with the iteration. The second time you
+		// find unequal adjacent characters, return false.
+		else {
+			String longerWord = (word1.length() > word2.length()) ? word1 : word2;
+			String shorterWord = (word1.length() < word2.length()) ? word1 : word2;
+			
+			int i = 0;		// the current character index of the longer string
+			int j = 0;		// the current character index of the shorter string
+			
+			while(i < shorterWord.length()) {
+				if(longerWord.charAt(i) != shorterWord.charAt(j) && i == j) {
+					i++;
+					continue;
+				}
+				else if(longerWord.charAt(i) != shorterWord.charAt(j) && i != j) {
+					return false;
+				}
+				i++;
+				j++;
+			}
+			
+			return true;	
+		}	
 	}
-	
 }

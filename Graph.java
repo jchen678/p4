@@ -12,19 +12,18 @@ import java.util.Set;
  * 
  */
 public class Graph<E> implements GraphADT<E> {
-    
-    HashMap<E, GraphNode<E>> adjList = new HashMap<>();
-    ArrayList<E> vertices = new ArrayList<E>();
-    int size = 0;
     /**
      * Instance variables and constructors
      */
-    public Graph() {
-    }
     
-    @Override
-    public String toString() {
-        return adjList.toString();
+    //stores graphnodes with edge information 
+    HashMap<E, GraphNode<E>> adjList;
+    
+    //stores raw data of vertices
+    ArrayList<E> vertices;
+    public Graph() {
+        adjList = new HashMap<>();
+        vertices = new ArrayList<>();
     }
     
     /**
@@ -39,8 +38,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public E addVertex(E vertex) {
-        if (vertex != null && adjList.get(vertex) == null) {
-            size ++;
+        if (vertex != null && adjList.get(vertex) == null) { //checks if vertex is non null and unique
             adjList.put(vertex, new GraphNode<E>(vertex));
             vertices.add(vertex);
             return vertex;
@@ -61,7 +59,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public E removeVertex(E vertex) {
-        if (vertex != null && adjList.get(vertex) != null) {
+        if (vertex != null && adjList.get(vertex) != null) { //checks if vertex is non null and exists in graph
             GraphNode<E> g = adjList.get(vertex);
             g.removeAllEdges();
             adjList.remove(vertex);
@@ -84,7 +82,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public boolean addEdge(E vertex1, E vertex2) {
-        if (adjList.get(vertex1) != null && adjList.get(vertex2) != null && !vertex1.equals(vertex2)) {
+        if (adjList.get(vertex1) != null && adjList.get(vertex2) != null && !vertex1.equals(vertex2)) { //checks if vertexes are in graph and are different
             adjList.get(vertex1).addEdge(adjList.get(vertex2));
             return true;
         }
@@ -104,7 +102,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public boolean removeEdge(E vertex1, E vertex2) {
-        if (adjList.get(vertex1) != null && adjList.get(vertex2) != null && !vertex1.equals(vertex2)) {
+        if (adjList.get(vertex1) != null && adjList.get(vertex2) != null && !vertex1.equals(vertex2)) { //checks if vertexes are in graph and are different
             adjList.get(vertex1).removeEdge(adjList.get(vertex2));
             return true;
         }
@@ -124,7 +122,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public boolean isAdjacent(E vertex1, E vertex2) {
-        if (adjList.get(vertex1) != null && adjList.get(vertex2) != null && !vertex1.equals(vertex2)) {
+        if (adjList.get(vertex1) != null && adjList.get(vertex2) != null && !vertex1.equals(vertex2)) { //checks if vertexes are in graph and are different
             return adjList.get(vertex1).hasEdge(adjList.get(vertex2));
         }
         return false;

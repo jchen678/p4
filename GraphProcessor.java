@@ -41,6 +41,7 @@ public class GraphProcessor {
      * Graph which stores the dictionary words and their associated connections
      */
     private GraphADT<String> graph;
+    private Stream<String> fileStream;
 
     /**
      * Constructor for this class. Initializes instances variables to set the starting state of the object
@@ -64,7 +65,25 @@ public class GraphProcessor {
      * @return Integer the number of vertices (words) added
      */
     public Integer populateGraph(String filepath) {
-        return 0;
+        try {
+            fileStream = WordProcessor.getWordStream(filepath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        fileStream.forEach(s -> {
+            graph.addVertex(s);
+            for (String str : graph.getAllVertices()) {
+                if (WordProcessor.isAdjacent(str, s)) {
+                    if (!str.equals(s)) {
+                        graph.addEdge(str, s);
+                    }
+                }
+            }
+        });
+        
+        
+        return (int)fileStream.count();
     
     }
 

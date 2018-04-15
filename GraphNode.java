@@ -12,6 +12,7 @@ public class GraphNode<E> {
     private E data;
     private ArrayList<GraphNode<E>> edges;
     
+    
     /*
      * @param   data    data of vertex
      */
@@ -83,4 +84,5 @@ public class GraphNode<E> {
         }
         return edgeList;
     }
+    
 }

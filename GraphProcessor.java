@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -42,7 +43,9 @@ public class GraphProcessor {
      */
     private GraphADT<String> graph;
     private Stream<String> fileStream;
-
+    private int[][] distanceMatrix;
+    private String[][] predMatrix;
+    private ArrayList<String> vertices;
     /**
      * Constructor for this class. Initializes instances variables to set the starting state of the object
      */
@@ -82,8 +85,8 @@ public class GraphProcessor {
             }
         });
         
-        
-        return (int)fileStream.count();
+        vertices = (ArrayList<String>)graph.getAllVertices();
+        return vertices.size();
     
     }
 
@@ -106,7 +109,22 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
-        return null;
+        List<String> list = new ArrayList<>();
+//        for (int i = 0; i < vertices.size(); i++) {
+//            for (int j = 0; j < vertices.size(); j++) {
+//                System.out.print(predMatrix[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
+        list.add(word1);
+        while (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] != word1) {
+            if (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] == null) {
+                return null;
+            }
+            list.add(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]);
+            word1 = predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
+        }
+        return list;
     
     }
     
@@ -128,7 +146,7 @@ public class GraphProcessor {
      * @return Integer distance
      */
     public Integer getShortestDistance(String word1, String word2) {
-        return null;
+        return distanceMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
     }
     
     /**
@@ -137,6 +155,61 @@ public class GraphProcessor {
      * Any shortest path algorithm can be used (Djikstra's or Floyd-Warshall recommended).
      */
     public void shortestPathPrecomputation() {
-    
+        distanceMatrix = new int[vertices.size()][vertices.size()];
+        predMatrix = new String[vertices.size()][vertices.size()];
+        
+        for (int i = 0; i < vertices.size(); i++) {
+            for (int j = 0; j < vertices.size(); j++) {
+                if (i == j) {
+                    distanceMatrix[i][j] = 0;
+                    predMatrix[i][j] = vertices.get(i);
+                }
+                else if(graph.isAdjacent(vertices.get(i), vertices.get(j))) {
+                    distanceMatrix[i][j] = 1;
+                    predMatrix[i][j] = vertices.get(j);
+                }
+                else {
+                    distanceMatrix[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        
+        
+        for (int k = 0; k < vertices.size(); k++) {
+            for (int i = 0; i < vertices.size(); i++) {
+                for (int j = 0; j < vertices.size(); j++) {
+                    if (distanceMatrix[i][k] != Integer.MAX_VALUE && distanceMatrix[k][j] != Integer.MAX_VALUE) {
+                        if (distanceMatrix[i][j] > distanceMatrix[i][k] + distanceMatrix[k][j]) {
+                            distanceMatrix[i][j] = distanceMatrix[i][k] + distanceMatrix[k][j];
+                            predMatrix[i][j] = vertices.get(k);
+                        }
+                    }
+                }
+            }
+        }
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

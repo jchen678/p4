@@ -4,5 +4,7 @@ public class Main {
         GraphProcessor g = new GraphProcessor();
         
         g.populateGraph("text.txt");
+        g.shortestPathPrecomputation();
+        System.out.println(g.getShortestPath("LIT", "KITE"));
     }
 }

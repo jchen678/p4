@@ -197,6 +197,14 @@ public class GraphProcessor {
                 }
             }
         }
+        
+//        for (int i = 0; i < vertices.size(); i++) {
+//            for (int j = 0; j < vertices.size(); j++) {
+//                System.out.print(distanceMatrix[i][j] + "\t");
+//            }
+//            System.out.println();
+//        }
+            
 
         
         //implements floyd-warshal for shortest path and distance of a undirected graph
@@ -229,6 +237,13 @@ public class GraphProcessor {
             predMatrix = nextPredMatrix;
 
         }
+        
+//        for (int i = 0; i < vertices.size(); i++) {
+//            for (int j = 0; j < vertices.size(); j++) {
+//                System.out.print(distanceMatrix[i][j] + "\t");
+//            }
+//            System.out.println();
+//        }
 
     }
 }

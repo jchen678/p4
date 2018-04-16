@@ -113,7 +113,12 @@ public class GraphProcessor {
     public List<String> getShortestPath(String word1, String word2) {
         
         
+        
         List<String> list = new ArrayList<>();
+        if (word1 == null || word2 == null || word1 == "" || word2 == "") {
+            return list;
+        }
+        
         if (word1.equals(word2)) {
             list.add(word1);
             return list;
@@ -172,6 +177,9 @@ public class GraphProcessor {
      */
     public Integer getShortestDistance(String word1, String word2) {
         //gets integer distance from distance matrix
+        if (word1 == null || word2 == null || word1 == "" || word2 == "") {
+            return null;
+        }
         return distanceMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]; 
     }
 
@@ -214,14 +222,17 @@ public class GraphProcessor {
 
         
         //implements floyd-warshal for shortest path and distance of a undirected graph
-        for (int k = 0; k < vertices.size(); k++) {
+        for (int k = 0; k < vertices.size(); k++) { 
             int[][] nextDistanceMatrix = new int[vertices.size()][vertices.size()];
             String[][] nextPredMatrix = new String[vertices.size()][vertices.size()];
             for (int i = 0; i < vertices.size(); i++) {
                 for (int j = 0; j < vertices.size(); j++) {
-                    if (i != k && j != k && j != i) {
-                        if (distanceMatrix[i][k] != Integer.MAX_VALUE && distanceMatrix[k][j] != Integer.MAX_VALUE) {
+                    if (i != k && j != k && j != i) { //for undirected graph
+                        //checks if components are not infinity, would never be smaller
+                        if (distanceMatrix[i][k] != Integer.MAX_VALUE && distanceMatrix[k][j] != Integer.MAX_VALUE) { 
+                            //checks if path through k is shorter than direct path
                             if (distanceMatrix[i][j] > distanceMatrix[i][k] + distanceMatrix[k][j]) {
+                                //update distance and predecessor matrix
                                 nextDistanceMatrix[i][j] = nextDistanceMatrix[j][i] = distanceMatrix[i][k] + distanceMatrix[k][j];
                                 nextPredMatrix[i][j] = predMatrix[i][k];
                             }

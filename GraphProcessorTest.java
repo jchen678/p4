@@ -338,21 +338,19 @@ public class GraphProcessorTest {
     }
     
     /**
-     * Call getShortestPath when graphProcessor is loaded with empty file should throw ArrayIndexOutOfBoundsException
+     * Call getShortestPath when graphProcessor is loaded with empty file should not throw exception
      */
     @Test
     public void test21_getShortestPath_on_empty_textfile_and_String() {
-	thrown.expect(ArrayIndexOutOfBoundsException.class);
 	testObj.populateGraph(path.getAbsolutePath());
 	testObj.getShortestPath("", "");
     }
     
     /**
-     * Call getShortestDistance when graphProcessor is loaded with empty file should throw ArrayIndexOutOfBoundsException
+     * Call getShortestDistance when graphProcessor is loaded with empty file should not throw exception
      */
     @Test
     public void test22_getShortestDistance_on_empty_textfile_and_String() {
-	thrown.expect(ArrayIndexOutOfBoundsException.class);
 	testObj.populateGraph(path.getAbsolutePath());
 	testObj.getShortestDistance("", "");
     }

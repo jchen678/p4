@@ -123,11 +123,10 @@ public class GraphProcessor {
             reverse = 1;
         }
         
-
-        
         //follows predecessor matrix to trace shortest path
-        System.out.println("word1 index: " + vertices.indexOf(word1) + " word2 index: " + vertices.indexOf(word2));
+        //System.out.println("word1 index: " + vertices.indexOf(word1) + " word2 index: " + vertices.indexOf(word2));
         if (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] == null) {
+            System.out.println("initial was null");
             return list;
         }
         list.add(word1);

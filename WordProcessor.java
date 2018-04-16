@@ -131,19 +131,20 @@ public class WordProcessor {
 			int i = 0;		// the current character index of the longer string
 			int j = 0;		// the current character index of the shorter string
 			
-			while(i <= shorterWord.length()) {
+			while(j < shorterWord.length()) {
 				if(longerWord.charAt(i) != shorterWord.charAt(j) && i == j) {
+				    //System.out.println("first difference found: " + longerWord.charAt(i) + " " + shorterWord.charAt(j));
 					i++;
 					continue;
 				}
 				else if(longerWord.charAt(i) != shorterWord.charAt(j) && i != j) {
+				    //System.out.println("second difference found: " + longerWord.charAt(i) + " " + shorterWord.charAt(j));
 					return false;
 				}
 				i++;
 				j++;
 			}
-			
-			return true;	
+			return true;
 		}	
 	}
 }

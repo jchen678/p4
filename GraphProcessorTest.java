@@ -61,6 +61,11 @@ public class GraphProcessorTest<E> {
 			fail("expected: " + expected + " actual: " + actual);
 	}
 	
+	/**
+	 * Tests the populateGraph() method. Adds several words from a test text file and checks if the
+	 * number returned by populateGraph() is equal to the number of words in the file. The test
+	 * passes if the method returns the number of words in the file, and fails if it does not.
+	 */
 	@Test
 	public void test02_populateGraph() {
 		expected = "7";
@@ -70,6 +75,11 @@ public class GraphProcessorTest<E> {
 		}
 	}
 	
+	/**
+	 * Tests the getShortestPath() method. After populating the graph with several words from a
+	 * test text file, checks that getShortestPath() returns the correct path between two words.
+	 * The test passes if the method returns the correct path, and fails if it does not.
+	 */
 	@Test
 	public void test03_getShortestPath_connected_vertices() {
 		List<String> expectedList = new ArrayList<String>();
@@ -85,6 +95,11 @@ public class GraphProcessorTest<E> {
 		}
 	}
 	
+	/**
+	 * Tests the getShortestDistance() method. After populating the graph with several words from a
+	 * test text file, checks that getShortestDistance() returns the correct distance between two
+	 * words. The test passes if the method returns the correct distance, and fails if it does not.
+	 */
 	@Test
 	public void test04_getShortestDistance_connected_vertices() {
 		expected = "3";
@@ -95,6 +110,11 @@ public class GraphProcessorTest<E> {
 		}
 	}
 	
+	/**
+	 * Tests the getShortestPath() method. After populating the graph with several words from a
+	 * test text file, call getShortestPath() on two words with no path between them. The test
+	 * passes if the method returns no path, and fails otherwise.
+	 */
 	@Test
 	public void test05_getShortestPath_unconnected_vertices() {
 		expected = new ArrayList<String>().toString();
@@ -105,6 +125,11 @@ public class GraphProcessorTest<E> {
 		}
 	}
 	
+	/**
+	 * Tests the getShortestDistance() method. After populating the graph with words from a test
+	 * text file, call getShortestDistance() on two words with no path between them. The test
+	 * passes if the method returns Integer.MAX_VALUE, and fails otherwise.
+	 */
 	@Test
 	public void test06_getShortestDistance_unconnected_vertices() {
 		expected = Integer.MAX_VALUE + "";

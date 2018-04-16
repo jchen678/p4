@@ -125,21 +125,16 @@ public class GraphProcessor {
         
 
         
-        
         //follows predecessor matrix to trace shortest path
-        int ctr = 0;
+        System.out.println("word1 index: " + vertices.indexOf(word1) + " word2 index: " + vertices.indexOf(word2));
         if (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] == null) {
             return list;
         }
         list.add(word1);
         while (!(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)].equals(word2))) {
-            if (ctr > vertices.size()) {
-                return new ArrayList<String>();
-            }
             //System.out.println("checking: " + word1 + " to: " + word2);
             list.add(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]);
             word1 = predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
-            ctr++;
         }
         //System.out.println("checking: " + word1 + " to: " + word2);
         
@@ -191,7 +186,7 @@ public class GraphProcessor {
             for (int j = i; j < vertices.size(); j++) {
                 if (i == j) {
                     distanceMatrix[i][j] = 0;
-                    predMatrix[i][j] = "-";
+                    predMatrix[i][j] = null;
                 }
                 else if(graph.isAdjacent(vertices.get(i), vertices.get(j))) {
                     distanceMatrix[i][j] = distanceMatrix[j][i] = 1;

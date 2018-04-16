@@ -2,3 +2,4 @@ lit
 lite
 kite
 kites
+swag

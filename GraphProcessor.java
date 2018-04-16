@@ -86,8 +86,8 @@ public class GraphProcessor {
                 }
             }
         });
-
         vertices = (ArrayList<String>)graph.getAllVertices();
+        shortestPathPrecomputation();
         return vertices.size();
 
     }
@@ -114,7 +114,7 @@ public class GraphProcessor {
         
         List<String> list = new ArrayList<>();
         int reverse = 0; //check wether to reverse path afterwards
-
+        
         //reverse words if word1 has a higher index, due to bottom half of matrix only working for predecessors
         if (vertices.indexOf(word1) < vertices.indexOf(word2)) {
             String temp = word2;
@@ -122,15 +122,28 @@ public class GraphProcessor {
             word1 = temp;
             reverse = 1;
         }
+        
 
-        list.add(word1);
+        
         
         //follows predecessor matrix to trace shortest path
+        int ctr = 0;
+        if (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] == null) {
+            return list;
+        }
+        list.add(word1);
         while (!(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)].equals(word2))) {
+            if (ctr > vertices.size()) {
+                return new ArrayList<String>();
+            }
+            //System.out.println("checking: " + word1 + " to: " + word2);
             list.add(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]);
             word1 = predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
+            ctr++;
         }
-
+        //System.out.println("checking: " + word1 + " to: " + word2);
+        
+        
         list.add(word2);
 
         if (reverse == 1) {

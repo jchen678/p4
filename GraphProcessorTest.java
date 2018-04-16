@@ -133,7 +133,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test03_getShortestPath_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test07_getShortestPath_connected_vertices_CHAT_WHAT() {
 	List<String> expectedList = new ArrayList<String>();
@@ -147,7 +150,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test03_getShortestPath_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test08_getShortestPath_connected_vertices_CHEAT_CHAT() {
 	List<String> expectedList = new ArrayList<String>();
@@ -162,7 +168,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test03_getShortestPath_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test09_getShortestPath_connected_vertices_CAT_WHEAT() {
 	List<String> expectedList = new ArrayList<String>();
@@ -178,7 +187,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test03_getShortestPath_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test10_getShortestPath_connected_vertices_WHEAT_CAT() {
 	List<String> expectedList = new ArrayList<String>();
@@ -194,7 +206,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test04_getShortestDistance_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test11_getShortestDistance_connected_vertices_CHAT_WHAT() {
 	expected = "1";
@@ -204,7 +219,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test04_getShortestDistance_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test12_getShortestDistance_connected_vertices_CHEAT_CHAT() {
 	expected = "1";
@@ -214,7 +232,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test04_getShortestDistance_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test13_getShortestDistance_connected_vertices_CAT_CHEAT() {
 	expected = "3";
@@ -225,6 +246,9 @@ public class GraphProcessorTest {
 	}
     }
 
+    /**
+     * See {@link #test04_getShortestDistance_connected_vertices_CHAT_WHEAT()}
+     */
     @Test
     public void test14_getShortestDistance_connected_vertices_WHEAT_CAT() {
 	expected = "3";
@@ -235,6 +259,9 @@ public class GraphProcessorTest {
 	}
     }
 
+    /**
+     * See {@link #test05_getShortestPath_unconnected_vertices_CAT_BAG()}
+     */
     @Test
     public void test15_getShortestPath_unconnected_vertices_CAT_WHO() {
 	expected = new ArrayList<String>().toString();
@@ -245,6 +272,9 @@ public class GraphProcessorTest {
 	}
     }
 
+    /**
+     * See {@link #test05_getShortestPath_unconnected_vertices_CAT_BAG()}
+     */
     @Test
     public void test16_getShortestPath_unconnected_vertices_CHEAT_WHO() {
 	expected = new ArrayList<String>().toString();
@@ -255,6 +285,9 @@ public class GraphProcessorTest {
 	}
     }
 
+    /**
+     * See {@link #test05_getShortestPath_unconnected_vertices_CAT_BAG()}
+     */
     @Test
     public void test17_getShortestPath_unconnected_vertices_BAG_WHEAT() {
 	expected = new ArrayList<String>().toString();
@@ -265,6 +298,9 @@ public class GraphProcessorTest {
 	}
     }
 
+    /**
+     * See {@link #test06_getShortestDistance_unconnected_vertices_CAT_BAG()}
+     */
     @Test
     public void test18_getShortestDistance_unconnected_vertices_CAT_WHO() {
 	expected = Integer.MAX_VALUE + "";
@@ -275,6 +311,9 @@ public class GraphProcessorTest {
 	}
     }
 
+    /**
+     * See {@link #test06_getShortestDistance_unconnected_vertices_CAT_BAG()}
+     */
     @Test
     public void test19_getShortestDistance_unconnected_vertices_CHEAT_WHO() {
 	expected = Integer.MAX_VALUE + "";
@@ -284,7 +323,10 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * See {@link #test06_getShortestDistance_unconnected_vertices_CAT_BAG()}
+     */
     @Test
     public void test20_getShortestDistance_unconnected_vertices_BAG_WHEAT() {
 	expected = Integer.MAX_VALUE + "";
@@ -294,30 +336,39 @@ public class GraphProcessorTest {
 	    fail("expected: " + expected + " actual: " + actual);
 	}
     }
-
+    
+    /**
+     * Call getShortestPath when graphProcessor is loaded with empty file should throw ArrayIndexOutOfBoundsException
+     */
     @Test
     public void test21_getShortestPath_on_empty_textfile_and_String() {
-    expected = new ArrayList<String>().toString();
+	thrown.expect(ArrayIndexOutOfBoundsException.class);
 	testObj.populateGraph(path.getAbsolutePath());
-	actual = testObj.getShortestPath("", "") +"";
-	if (!expected.equals(actual)) {
-        fail("expected: " + expected + " actual: " + actual);
+	testObj.getShortestPath("", "");
     }
-    }
-
+    
+    /**
+     * Call getShortestDistance when graphProcessor is loaded with empty file should throw ArrayIndexOutOfBoundsException
+     */
     @Test
     public void test22_getShortestDistance_on_empty_textfile_and_String() {
 	thrown.expect(ArrayIndexOutOfBoundsException.class);
 	testObj.populateGraph(path.getAbsolutePath());
 	testObj.getShortestDistance("", "");
     }
-
+    
+    /**
+     * Call shortestPathPrecomputation when graphProcessor is loaded with empty file should not throw exception
+     */
     @Test
     public void test23_shortestPathPrecomputation_on_empty_textfile() {
 	testObj.populateGraph(path.getAbsolutePath());
 	testObj.shortestPathPrecomputation();
     }
-
+    
+    /**
+     * Call getShortestDistance and getShortestPath many times should not throw exception
+     */
     @Test
     public void test24_mass_calling_getShortestPath_and_getShortestDistance() {	
 	try {
@@ -336,6 +387,9 @@ public class GraphProcessorTest {
 	}
     }
     
+    /**
+     * Call getShortestPath on the same String should not throw exception and return an Array containing itself
+     */
     @Test
     public void test25_getShortestPath_on_same_word_WHAT() {
 	List<String> expectedList = new ArrayList<String>();
@@ -349,6 +403,9 @@ public class GraphProcessorTest {
 	}
     }
     
+    /**
+     * Call getShortestDistance on the same String should not throw exception and return 0
+     */
     @Test
     public void test26_getShortestDistance_on_same_word_WHAT() {
 	expected = "0";

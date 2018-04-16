@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,14 +46,14 @@ public class GraphProcessor {
     private Stream<String> fileStream;
     private int[][] distanceMatrix;
     private String[][] predMatrix;
-    private ArrayList<String> vertices;
+    private ArrayList<String> vertices = new ArrayList<String>();
     /**
      * Constructor for this class. Initializes instances variables to set the starting state of the object
      */
     public GraphProcessor() {
         this.graph = new Graph<>();
     }
-        
+
     /**
      * Builds a graph from the words in a file. Populate an internal graph, by adding words from the dictionary as vertices
      * and finding and adding the corresponding connections (edges) between 
@@ -73,7 +74,7 @@ public class GraphProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         fileStream.forEach(s -> {
             graph.addVertex(s);
             for (String str : graph.getAllVertices()) {
@@ -84,13 +85,13 @@ public class GraphProcessor {
                 }
             }
         });
-        
+
         vertices = (ArrayList<String>)graph.getAllVertices();
         return vertices.size();
-    
+
     }
 
-    
+
     /**
      * Gets the list of words that create the shortest path between word1 and word2
      * 
@@ -110,24 +111,31 @@ public class GraphProcessor {
      */
     public List<String> getShortestPath(String word1, String word2) {
         List<String> list = new ArrayList<>();
-//        for (int i = 0; i < vertices.size(); i++) {
-//            for (int j = 0; j < vertices.size(); j++) {
-//                System.out.print(predMatrix[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
+        int reverse = 0;
+
+        if (vertices.indexOf(word1) < vertices.indexOf(word2)) {
+            String temp = word2;
+            word2 = word1;
+            word1 = temp;
+            reverse = 1;
+        }
+
         list.add(word1);
-        while (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] != word1) {
-            if (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] == null) {
-                return null;
-            }
+
+        while (!(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)].equals(word2))) {
             list.add(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]);
             word1 = predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
         }
+
+        list.add(word2);
+
+        if (reverse == 1) {
+            Collections.reverse(list);
+        }
         return list;
-    
+
     }
-    
+
     /**
      * Gets the distance of the shortest path between word1 and word2
      * 
@@ -148,7 +156,7 @@ public class GraphProcessor {
     public Integer getShortestDistance(String word1, String word2) {
         return distanceMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
     }
-    
+
     /**
      * Computes shortest paths and distances between all possible pairs of vertices.
      * This method is called after every set of updates in the graph to recompute the path information.
@@ -157,37 +165,56 @@ public class GraphProcessor {
     public void shortestPathPrecomputation() {
         distanceMatrix = new int[vertices.size()][vertices.size()];
         predMatrix = new String[vertices.size()][vertices.size()];
-        
+
         for (int i = 0; i < vertices.size(); i++) {
-            for (int j = 0; j < vertices.size(); j++) {
+            for (int j = i; j < vertices.size(); j++) {
                 if (i == j) {
                     distanceMatrix[i][j] = 0;
-                    predMatrix[i][j] = vertices.get(i);
+                    predMatrix[i][j] = "-";
                 }
                 else if(graph.isAdjacent(vertices.get(i), vertices.get(j))) {
-                    distanceMatrix[i][j] = 1;
+                    distanceMatrix[i][j] = distanceMatrix[j][i] = 1;
                     predMatrix[i][j] = vertices.get(j);
+                    predMatrix[j][i] = vertices.get(i);
                 }
                 else {
-                    distanceMatrix[i][j] = Integer.MAX_VALUE;
+                    distanceMatrix[i][j] = distanceMatrix[j][i] = Integer.MAX_VALUE;
+                    predMatrix[i][j] = vertices.get(j);
+                    predMatrix[j][i] = vertices.get(i);
                 }
             }
         }
-        
-        
+
         for (int k = 0; k < vertices.size(); k++) {
+            int[][] nextDistanceMatrix = new int[vertices.size()][vertices.size()];
+            String[][] nextPredMatrix = new String[vertices.size()][vertices.size()];
             for (int i = 0; i < vertices.size(); i++) {
                 for (int j = 0; j < vertices.size(); j++) {
-                    if (distanceMatrix[i][k] != Integer.MAX_VALUE && distanceMatrix[k][j] != Integer.MAX_VALUE) {
-                        if (distanceMatrix[i][j] > distanceMatrix[i][k] + distanceMatrix[k][j]) {
-                            distanceMatrix[i][j] = distanceMatrix[i][k] + distanceMatrix[k][j];
-                            predMatrix[i][j] = vertices.get(k);
+                    if (i != k && j != k && j != i) {
+                        if (distanceMatrix[i][k] != Integer.MAX_VALUE && distanceMatrix[k][j] != Integer.MAX_VALUE) {
+                            if (distanceMatrix[i][j] > distanceMatrix[i][k] + distanceMatrix[k][j]) {
+                                nextDistanceMatrix[i][j] = nextDistanceMatrix[j][i] = distanceMatrix[i][k] + distanceMatrix[k][j];
+                                nextPredMatrix[i][j] = predMatrix[i][k];
+                            }
+                            else {
+                                nextDistanceMatrix[i][j] = distanceMatrix[i][j];
+                                nextPredMatrix[i][j] = predMatrix[i][j];
+                            }
+                        } else {
+                            nextDistanceMatrix[i][j] = distanceMatrix[i][j];
+                            nextPredMatrix[i][j] = predMatrix[i][j];
                         }
+                    }else {
+                        nextDistanceMatrix[i][j]= distanceMatrix[i][j];
+                        nextPredMatrix[i][j] = predMatrix[i][j];
                     }
                 }
             }
+            distanceMatrix = nextDistanceMatrix;
+            predMatrix = nextPredMatrix;
+
         }
-        
+
     }
 }
 

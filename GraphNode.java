@@ -30,14 +30,22 @@ public class GraphNode<E> {
         return data;
     }
     
+    @Override
+    public String toString() {
+        return data.toString();
+    }
+    
     /*
      * connects node to another node
      * 
      * @param   node    node to be connected to (edge between nodes)
      */
     public void addEdge(GraphNode<E> node) {
-        edges.add(node);
-        node.edges.add(this);
+        if (!edges.contains(node)) {
+            edges.add(node);
+            node.edges.add(this);
+        }
+        
     }
     
     /*

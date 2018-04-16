@@ -58,7 +58,7 @@ public class GraphProcessorTest<E> {
 		@Test
 		public void test01_() {
 			expected = "true";
-			actual = "" 
+			actual = "";
 			if (!expected.equals(actual))
 				fail("expected: " + expected + " actual: " + actual);
 		}

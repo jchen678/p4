@@ -3,8 +3,8 @@ public class Main {
     public static void main(String[] args) {
         GraphProcessor g = new GraphProcessor();
         
-        g.populateGraph("text.txt");
+        g.populateGraph("word_list.txt");
         g.shortestPathPrecomputation();
-        System.out.println(g.getShortestPath("LIT", "KITE"));
+        System.out.println(g.getShortestPath("DEFINE", "SHINNY"));
     }
 }

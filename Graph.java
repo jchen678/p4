@@ -36,15 +36,15 @@ public class Graph<E> implements GraphADT<E> {
      * @param vertex the vertex to be added
      * @return vertex if vertex added, else return null if vertex can not be added (also if valid conditions are violated)
      */
+    
     @Override
     public E addVertex(E vertex) {
-        if (vertex != null && adjList.get(vertex) == null) { //checks if vertex is non null and unique
+        if (vertex != null && vertices.contains(vertex) == false) { //checks if vertex is non null and unique
             adjList.put(vertex, new GraphNode<E>(vertex));
             vertices.add(vertex);
             return vertex;
         }
         return null;
-        
     }
 
     /**
@@ -59,7 +59,7 @@ public class Graph<E> implements GraphADT<E> {
      */
     @Override
     public E removeVertex(E vertex) {
-        if (vertex != null && adjList.get(vertex) != null) { //checks if vertex is non null and exists in graph
+        if (vertex != null && adjList.containsKey(vertex) == true) { //checks if vertex is non null and exists in graph
             GraphNode<E> g = adjList.get(vertex);
             g.removeAllEdges();
             adjList.remove(vertex);

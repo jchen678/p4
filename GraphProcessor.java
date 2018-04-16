@@ -112,7 +112,13 @@ public class GraphProcessor {
      */
     public List<String> getShortestPath(String word1, String word2) {
         
+        
         List<String> list = new ArrayList<>();
+        if (word1.equals(word2)) {
+            list.add(word1);
+            return list;
+        }
+        
         int reverse = 0; //check wether to reverse path afterwards
         
         //reverse words if word1 has a higher index, due to bottom half of matrix only working for predecessors
@@ -126,7 +132,7 @@ public class GraphProcessor {
         //follows predecessor matrix to trace shortest path
         //System.out.println("word1 index: " + vertices.indexOf(word1) + " word2 index: " + vertices.indexOf(word2));
         if (predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)] == null) {
-            System.out.println("initial was null");
+            //System.out.println("initial was null");
             return list;
         }
         list.add(word1);

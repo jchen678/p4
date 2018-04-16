@@ -297,9 +297,12 @@ public class GraphProcessorTest {
 
     @Test
     public void test21_getShortestPath_on_empty_textfile_and_String() {
-	thrown.expect(ArrayIndexOutOfBoundsException.class);
+    expected = new ArrayList<String>().toString();
 	testObj.populateGraph(path.getAbsolutePath());
-	testObj.getShortestPath("", "");
+	actual = testObj.getShortestPath("", "") +"";
+	if (!expected.equals(actual)) {
+        fail("expected: " + expected + " actual: " + actual);
+    }
     }
 
     @Test

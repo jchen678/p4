@@ -44,9 +44,9 @@ public class GraphProcessor {
      */
     private GraphADT<String> graph;
     private Stream<String> fileStream;
-    private int[][] distanceMatrix;
-    private String[][] predMatrix;
-    private ArrayList<String> vertices = new ArrayList<String>();
+    private int[][] distanceMatrix; //stores shortest distance of vertices in format [origin vertex][end vertex] with the value being the distance
+    private String[][] predMatrix; //stores predecessor information for vertices, in same format as above, but value instead indicates next node to find shortest path
+    private ArrayList<String> vertices = new ArrayList<String>(); //stores all vertices of graph
     /**
      * Constructor for this class. Initializes instances variables to set the starting state of the object
      */
@@ -75,11 +75,12 @@ public class GraphProcessor {
             e.printStackTrace();
         }
 
+        //for each item in the stream, add a vertex to graph and check all previous vertices for adjacency (1 letter change) 
         fileStream.forEach(s -> {
             graph.addVertex(s);
             for (String str : graph.getAllVertices()) {
-                if (WordProcessor.isAdjacent(str, s)) {
-                    if (!str.equals(s)) {
+                if (WordProcessor.isAdjacent(str, s)) { //check of current string and strings already in graph are similar
+                    if (!str.equals(s)) { //ignore same string
                         graph.addEdge(str, s);
                     }
                 }
@@ -110,9 +111,11 @@ public class GraphProcessor {
      * @return List<String> list of the words
      */
     public List<String> getShortestPath(String word1, String word2) {
+        
         List<String> list = new ArrayList<>();
-        int reverse = 0;
+        int reverse = 0; //check wether to reverse path afterwards
 
+        //reverse words if word1 has a higher index, due to bottom half of matrix only working for predecessors
         if (vertices.indexOf(word1) < vertices.indexOf(word2)) {
             String temp = word2;
             word2 = word1;
@@ -121,7 +124,8 @@ public class GraphProcessor {
         }
 
         list.add(word1);
-
+        
+        //follows predecessor matrix to trace shortest path
         while (!(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)].equals(word2))) {
             list.add(predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]);
             word1 = predMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
@@ -154,7 +158,8 @@ public class GraphProcessor {
      * @return Integer distance
      */
     public Integer getShortestDistance(String word1, String word2) {
-        return distanceMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)];
+        //gets integer distance from distance matrix
+        return distanceMatrix[vertices.indexOf(word1)][vertices.indexOf(word2)]; 
     }
 
     /**
@@ -163,6 +168,9 @@ public class GraphProcessor {
      * Any shortest path algorithm can be used (Djikstra's or Floyd-Warshall recommended).
      */
     public void shortestPathPrecomputation() {
+        
+        //sets up predecessor matrix by filling collumns with corresponding vertex (determined through index in vertices arraylist)
+        //sets up distance matrix by checking for 1 length adjacencies and placing a 1 in corresponding index of matrix, else set to deafult of Integer.MAX_VALUE
         distanceMatrix = new int[vertices.size()][vertices.size()];
         predMatrix = new String[vertices.size()][vertices.size()];
 
@@ -179,12 +187,12 @@ public class GraphProcessor {
                 }
                 else {
                     distanceMatrix[i][j] = distanceMatrix[j][i] = Integer.MAX_VALUE;
-                    predMatrix[i][j] = vertices.get(j);
-                    predMatrix[j][i] = vertices.get(i);
                 }
             }
         }
 
+        
+        //implements floyd-warshal for shortest path and distance of a undirected graph
         for (int k = 0; k < vertices.size(); k++) {
             int[][] nextDistanceMatrix = new int[vertices.size()][vertices.size()];
             String[][] nextPredMatrix = new String[vertices.size()][vertices.size()];

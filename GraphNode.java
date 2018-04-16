@@ -36,7 +36,7 @@ public class GraphNode<E> {
     }
     
     /*
-     * connects node to another node
+     * connects node to another node if edge doesnt already exist
      * 
      * @param   node    node to be connected to (edge between nodes)
      */
